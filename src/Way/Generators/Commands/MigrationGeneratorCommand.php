@@ -71,7 +71,7 @@ class MigrationGeneratorCommand extends GeneratorCommand {
         // let's run dump-autoload to refresh everything
         if ( ! $this->option('testing'))
         {
-            $this->call('dump-autoload');
+          //  $this->call('dump-autoload');
         }
     }
 

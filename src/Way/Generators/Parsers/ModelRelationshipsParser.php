@@ -1,30 +1,30 @@
 <?php namespace Way\Generators\Parsers;
 
-class MigrationFieldsParser {
+class ModelRelationshipsParser {
 
     /**
-     * Parse a string of fields, like
-     * name:string, age:integer
+     * Parse a string of relationsips, like
+     * address:hasOne, tags:morphedByMany
      *
-     * @param string $fields
+     * @param string $relationships
      * @return array
      */
-    public function parse($fields)
+    public function parse($relationships)
     {
-        if ( ! $fields) return [];
+        if ( ! $relationships) return [];
 
         // name:string, age:integer
         // name:string(10,2), age:integer
-        $fields = preg_split('/\s?,\s/', $fields);
+        $relationships = preg_split('/\s?,\s/', $relationships);
 
         $parsed = [];
 
-        foreach($fields as $index => $field)
+        foreach($relationships as $index => $relationship)
         {
             // Example:
             // name:string:nullable => ['name', 'string', 'nullable']
             // name:string(15):nullable
-            $chunks = preg_split('/\s?:\s?/', $field, null);
+            $chunks = preg_split('/\s?:\s?/', $relationship, null);
 
             // The first item will be our property
             $property = array_shift($chunks);
@@ -40,8 +40,10 @@ class MigrationFieldsParser {
             {
                 $type = $matches[1];
                 $args = $matches[2];
+            } else if (preg_match('/(.+?)\(\)/', $type, $matches))
+            {
+              $type = $matches[1];
             }
-
             // Finally, anything that remains will
             // be our decorators
             $decorators = $chunks;

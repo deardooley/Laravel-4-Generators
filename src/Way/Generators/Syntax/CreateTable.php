@@ -1,7 +1,7 @@
 <?php namespace Way\Generators\Syntax;
 
 class CreateTable extends Table {
-
+  
     /**
      * Build string for creating a
      * table and columns
@@ -56,7 +56,8 @@ class CreateTable extends Table {
     {
       foreach(array_slice($fields, 0) as $index=>$field)
       {
-        if ( $field['type'] === 'integer' && $field['field'] === $columnName )
+        if ( $field['type'] === 'integer' && $field['field'] === $columnName ||
+             $field['type'] === 'morphs' && $field['field'] === str_replace('_in', '', $columnName))
         {
             return true;
         }

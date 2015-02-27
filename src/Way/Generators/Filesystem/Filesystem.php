@@ -10,9 +10,9 @@ class Filesystem {
      * @throws FileAlreadyExists
      * @return int
      */
-    public function make($file, $content)
+    public function make($file, $content, $force=false)
     {
-        if ( $this->exists($file))
+        if ( !$force && $this->exists($file))
         {
             throw new FileAlreadyExists;
         }
@@ -48,4 +48,4 @@ class Filesystem {
         return file_get_contents($file);
     }
 
-} 
+}

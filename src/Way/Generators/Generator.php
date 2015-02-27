@@ -26,7 +26,7 @@ class Generator {
      * @param $templateData
      * @param $filePathToGenerate
      */
-    public function make($templatePath, $templateData, $filePathToGenerate)
+    public function make($templatePath, $templateData, $filePathToGenerate, $force=false)
     {
         // We first need to compile the template,
         // according to the data that we provide.
@@ -34,7 +34,7 @@ class Generator {
 
         // Now that we have the compiled template,
         // we can actually generate the file.
-        $this->file->make($filePathToGenerate, $template);
+        $this->file->make($filePathToGenerate, $template, $force);
     }
 
     /**
