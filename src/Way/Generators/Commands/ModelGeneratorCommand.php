@@ -65,7 +65,7 @@ class ModelGeneratorCommand extends GeneratorCommand {
                 $this->getTemplatePath(),
                 $this->getTemplateData(),
                 $filePathToGenerate,
-                ($this->option('force') == 1)
+                (true || $this->option('force') == 1)
             );
 
             $this->info("Created: {$filePathToGenerate}");

@@ -79,6 +79,11 @@ class Model {
 
       foreach($relationships as $relationship)
       {
+          $typeTokens = explode('(', $relationship['type']);
+          if (count($typeTokens) > 1) {
+            throw new InvalidModelRelationship('Invalid relationship definition '.$typeTokens[0].'. Please remove spaces from the argument list.');
+            break;
+          }
 
           $name = $relationship['field'];
           $type = $relationship['type'];
@@ -93,16 +98,16 @@ class Model {
                 $output .= sprintf(
                     "public function %s()\n\t{\n\t\treturn \$this->%s(%s)",
                     $name,
-                    $type,
+                    $relationship['type'],
                     $relationship['args']
                 );
             }
             else
             {
-              throw new InvalidModelRelationship('Invalid relationship definition. Please supply a relationship name on the referenced model.');
+              throw new InvalidModelRelationship('Invalid relationship definition '.$type.$relationship['args'].'. Please supply a relationship name on the referenced model.');
             }
           }
-          else if ($type == 'morphTo()' || $type == 'morphTo')
+          else if ($type == 'morphTo')
           {
             // requires no args
             $output .= sprintf(
@@ -120,7 +125,7 @@ class Model {
                     $relationship['args']
                 );
             } else {
-              throw new InvalidModelRelationship('Invalid relationship definition. Please supply both an intermediate and target model for this relationship.');
+              throw new InvalidModelRelationship('Invalid relationship definition '.$type.$relationship['args'].'. Please supply both an intermediate and target model for this relationship.');
             }
           }
           else
@@ -130,11 +135,11 @@ class Model {
                 $output .= sprintf(
                     "public function %s()\n\t{\n\t\treturn \$this->%s(%s)",
                     $name,
-                    $type,
+                    $relationship['type'],
                     $relationship['args']
                 );
             } else {
-              throw new InvalidModelRelationship('Invalid relationship definition. Please supply the target model for this relationship.');
+              throw new InvalidModelRelationship('Invalid relationship definition '.$type.$relationship['args'].'. Please supply the target model for this relationship.');
             }
           }
 
@@ -158,7 +163,7 @@ class Model {
     {
         if (!in_array($relationshipType, ['hasOne', 'belongsTo', 'hasMany', 'belongsToMany', 'hasManyThrough', 'morphTo', 'morphTo()', 'morphMany', 'morphedToMany', 'morphedByMany']))
         {
-            throw new InvalidModelRelationship('Please define your relationship as one of "hasOne", "belongsTo", "hasMany", "belongsToMany", "hasManyThrough", "morphTo", "morphMany", "morphedToMany", or "morphedByMany."');
+            throw new InvalidModelRelationship('Invalid relationship ' . $relationshipType . '. Please define your relationship as one of "hasOne", "belongsTo", "hasMany", "belongsToMany", "hasManyThrough", "morphTo", "morphMany", "morphedToMany", or "morphedByMany."');
         }
     }
 

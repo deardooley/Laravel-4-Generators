@@ -1,5 +1,5 @@
 <?php namespace Way\Generators\Parsers;
-
+use Way\Generators\InvalidModelRelationship;
 class ModelRelationshipsParser {
 
     /**
@@ -40,10 +40,8 @@ class ModelRelationshipsParser {
             {
                 $type = $matches[1];
                 $args = $matches[2];
-            } else if (preg_match('/(.+?)\(\)/', $type, $matches))
-            {
-              $type = $matches[1];
             }
+
             // Finally, anything that remains will
             // be our decorators
             $decorators = $chunks;
